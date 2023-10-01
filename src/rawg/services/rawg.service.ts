@@ -4,9 +4,12 @@ import { GameQueryParamDto } from '../dtos/gameQueryParam.dto';
 import { HttpService } from '@nestjs/axios';
 import { GameApiResponse } from '../dtos/gameApiResponse.dto';
 import { GameApiResponseProcessed } from '../dtos/gameApiResponseProcessed.dto';
-import { map } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { GenreApiResponse } from '../dtos/genreApiResponse.dto';
 import { PlatformResponse } from '../dtos/platformResponse.dto';
+import { GameProcessed } from '../dtos/gameProcessed.dto';
+import { Genre } from '../dtos/genre.dto';
+import { Platform } from '../dtos/platform.dto';
 
 @Injectable()
 export class RawgService {
@@ -18,7 +21,7 @@ export class RawgService {
   private readonly BASE_URL = this.configService.get('BASE_URL');
   private readonly API_KEY = this.configService.get('RAWG_API_KEY');
 
-  getGamesAsync(url: string, gameQueryParam: GameQueryParamDto) {
+  getGamesAsync(url: string, gameQueryParam: GameQueryParamDto): Observable<GameProcessed[]>{
     console.log(`Reading Data from ${url} end-point`);
     const fullUrl = `${this.BASE_URL}/${url}?key=${this.API_KEY}&page=1`;
     const queryParams = {
@@ -37,7 +40,7 @@ export class RawgService {
     );
   }
 
-  getGenresAsync(url: string) {
+  getGenresAsync(url: string):Observable<Genre[]> {
     console.log(`Reading Data from ${url} end-point`);
     const fullUrl = `${this.BASE_URL}/${url}?key=${this.API_KEY}`;
     return this.httpService.get<GenreApiResponse>(fullUrl).pipe(
@@ -53,7 +56,7 @@ export class RawgService {
     );
   }
 
-  getParentPlatformAsync(url: string) {
+  getParentPlatformAsync(url: string):Observable<Platform[]> {
     console.log(`Reading Data from ${url} end-point`);
     const fullUrl = this.getFullUrl(url);
     return this.httpService.get<PlatformResponse>(fullUrl).pipe(
