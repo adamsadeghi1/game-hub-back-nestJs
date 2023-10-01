@@ -57,3 +57,18 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+
+## Run app in Docker
+
+Create a .env file based on the keys designated on .env.example and locate in your root application then:
+
+```
+$ chmod +x start-app.sh
+
+$ ./start-app.sh
+```
+Thats it!!!
+
+Above code is going to create a docker image and a correspondant container and run the app on port ```3001```
+
+use ```localhost:3001/api``` to see swagger documentation.
