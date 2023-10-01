@@ -4,7 +4,7 @@ import { RawgService } from '../services/rawg.service';
 import { ConfigModule } from '@nestjs/config';
 import { HttpModule } from '@nestjs/axios';
 
-describe('RawgGameController', () => {
+describe('RawgPlatformController', () => {
   let controller: RawgPlatformController;
 
   beforeEach(async () => {
