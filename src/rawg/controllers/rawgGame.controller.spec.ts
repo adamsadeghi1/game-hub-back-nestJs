@@ -14,10 +14,10 @@ describe('RawgGameController', () => {
           timeout: 5000,
           maxRedirects: 5,
         }),
-        ConfigModule.forRoot({ isGlobal: true })
+        ConfigModule.forRoot({ isGlobal: true }),
       ],
       controllers: [RawgGameController],
-      providers: [RawgService] 
+      providers: [RawgService],
     }).compile();
 
     controller = module.get<RawgGameController>(RawgGameController);

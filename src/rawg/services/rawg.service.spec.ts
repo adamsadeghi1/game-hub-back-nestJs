@@ -13,7 +13,7 @@ describe('RawgService', () => {
           timeout: 5000,
           maxRedirects: 5,
         }),
-        ConfigModule.forRoot({ isGlobal: true })
+        ConfigModule.forRoot({ isGlobal: true }),
       ],
       providers: [RawgService],
     }).compile();

@@ -5,15 +5,13 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 async function bootstrap() {
   const corsOptions = {
     origin: 'http://localhost:5180',
-  }
+  };
   const config = new DocumentBuilder()
     .setTitle('Rawg Apis')
     .setDescription('Document for Rawg Api')
     .setVersion('1.0')
     .addTag('Rawg')
     .build();
-    
-
 
   const app = await NestFactory.create(AppModule);
   app.enableCors(corsOptions);

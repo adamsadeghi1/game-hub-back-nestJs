@@ -21,7 +21,10 @@ export class RawgService {
   private readonly BASE_URL = this.configService.get('BASE_URL');
   private readonly API_KEY = this.configService.get('RAWG_API_KEY');
 
-  getGamesAsync(url: string, gameQueryParam: GameQueryParamDto): Observable<GameProcessed[]>{
+  getGamesAsync(
+    url: string,
+    gameQueryParam: GameQueryParamDto,
+  ): Observable<GameProcessed[]> {
     console.log(`Reading Data from ${url} end-point`);
     const fullUrl = `${this.BASE_URL}/${url}?key=${this.API_KEY}&page=1`;
     const queryParams = {
@@ -40,7 +43,7 @@ export class RawgService {
     );
   }
 
-  getGenresAsync(url: string):Observable<Genre[]> {
+  getGenresAsync(url: string): Observable<Genre[]> {
     console.log(`Reading Data from ${url} end-point`);
     const fullUrl = `${this.BASE_URL}/${url}?key=${this.API_KEY}`;
     return this.httpService.get<GenreApiResponse>(fullUrl).pipe(
@@ -56,7 +59,7 @@ export class RawgService {
     );
   }
 
-  getParentPlatformAsync(url: string):Observable<Platform[]> {
+  getParentPlatformAsync(url: string): Observable<Platform[]> {
     console.log(`Reading Data from ${url} end-point`);
     const fullUrl = this.getFullUrl(url);
     return this.httpService.get<PlatformResponse>(fullUrl).pipe(

@@ -14,10 +14,10 @@ describe('RawgGenreController', () => {
           timeout: 5000,
           maxRedirects: 5,
         }),
-        ConfigModule.forRoot({ isGlobal: true })
+        ConfigModule.forRoot({ isGlobal: true }),
       ],
       controllers: [RawgGenreController],
-      providers: [RawgService] 
+      providers: [RawgService],
     }).compile();
 
     controller = module.get<RawgGenreController>(RawgGenreController);

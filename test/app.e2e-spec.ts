@@ -16,9 +16,7 @@ describe('RawgGameController (e2e)', () => {
   });
 
   it('/ (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/api/games')
-      .expect(200);
+    return request(app.getHttpServer()).get('/api/games').expect(200);
   });
 });
 
@@ -35,9 +33,7 @@ describe('RawgGenreController (e2e)', () => {
   });
 
   it('/ (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/api/genres')
-      .expect(200);
+    return request(app.getHttpServer()).get('/api/genres').expect(200);
   });
 });
 
@@ -54,8 +50,6 @@ describe('RawgPlatformController (e2e)', () => {
   });
 
   it('/ (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/api/platforms')
-      .expect(200);
+    return request(app.getHttpServer()).get('/api/platforms').expect(200);
   });
 });

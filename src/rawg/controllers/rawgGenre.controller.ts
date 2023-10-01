@@ -9,8 +9,7 @@ export class RawgGenreController {
   constructor(private readonly rawgService: RawgService) {}
 
   @Get()
-  @ApiResponse({ status: 200, description: 'list of Genre', type: [Genre] 
-  })
+  @ApiResponse({ status: 200, description: 'list of Genre', type: [Genre] })
   async getAllGenres() {
     return this.rawgService.getGenresAsync('genres');
   }
