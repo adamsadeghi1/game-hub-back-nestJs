@@ -4,7 +4,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const corsOptions = {
-    origin: 'http://localhost:5180',
+    origin: ['http://localhost:5180', 'http://10.0.0.171:5180'],
   };
   const config = new DocumentBuilder()
     .setTitle('Rawg Apis')

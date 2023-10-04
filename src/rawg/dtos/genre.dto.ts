@@ -8,7 +8,7 @@ export class Genre {
   @IsString()
   slug: string;
   @IsNumber()
-  count: number;
+  games_count: number;
   @IsString()
   image_background: string;
 }

@@ -52,7 +52,7 @@ export class RawgService {
           id: genre.id,
           name: genre.name,
           slug: genre.slug,
-          count: genre.count,
+          games_count: genre.games_count,
           image_background: genre.image_background,
         }));
       }),
