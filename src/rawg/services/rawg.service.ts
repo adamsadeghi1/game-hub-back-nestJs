@@ -10,6 +10,7 @@ import { PlatformResponse } from '../dtos/platformResponse.dto';
 import { GameProcessed } from '../dtos/gameProcessed.dto';
 import { Genre } from '../dtos/genre.dto';
 import { Platform } from '../dtos/platform.dto';
+import { GameFinalResult } from '../dtos/gameFinalResult.dto';
 
 @Injectable()
 export class RawgService {
@@ -24,28 +25,30 @@ export class RawgService {
   getGamesAsync(
     url: string,
     gameQueryParam: GameQueryParamDto,
-  ): Observable<GameProcessed[]> {
+  ): Observable<GameFinalResult> {
     console.log(`Reading Data from ${url} end-point`);
-    const fullUrl = `${this.BASE_URL}/${url}?key=${this.API_KEY}&page=1`;
+    const fullUrl =this.getFullUrl(url);
     const queryParams = {
       params: {
         genres: gameQueryParam?.genres,
-        platforms: gameQueryParam?.platforms,
+        parent_platforms: gameQueryParam?.parent_platforms,
         ordering: gameQueryParam?.ordering,
         search: gameQueryParam?.search,
+        page: gameQueryParam?.page
       },
     };
 
     return this.httpService.get<GameApiResponse>(fullUrl, queryParams).pipe(
       map((response) => {
-        return this.processGameResult(response.data).results;
+        const procesdResult = this.processGameResult(response.data);
+        return {next:procesdResult.next , results:procesdResult.results};
       }),
     );
   }
 
   getGenresAsync(url: string): Observable<Genre[]> {
     console.log(`Reading Data from ${url} end-point`);
-    const fullUrl = `${this.BASE_URL}/${url}?key=${this.API_KEY}`;
+    const fullUrl = this.getFullUrl(url);
     return this.httpService.get<GenreApiResponse>(fullUrl).pipe(
       map((res) => {
         return res.data.results.map((genre) => ({
@@ -78,10 +81,10 @@ export class RawgService {
   }
   private processGameResult(response: GameApiResponse) {
     const gameProcessedList = response.results.map((game) => {
-      const platforms = game.parent_platforms.map(
+      const platforms = game.parent_platforms ? game.parent_platforms.map(
         (platforms) => platforms.platform,
-      );
-
+      ) : [];
+      
       return {
         id: game.id,
         name: game.name,
@@ -91,6 +94,9 @@ export class RawgService {
         rating_top: game.rating_top,
       };
     });
-    return new GameApiResponseProcessed(gameProcessedList);
+    const pageIndexInNext = response.next ?  response.next.indexOf('page=') : null;
+    const next =  pageIndexInNext ?  response.next.slice(pageIndexInNext) : null;
+
+    return new GameApiResponseProcessed(gameProcessedList,next);
   }
 }

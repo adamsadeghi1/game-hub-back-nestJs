@@ -5,11 +5,14 @@ export class GameQueryParamDto {
   genres?: string;
 
   @IsString()
-  platforms?: string;
+  parent_platforms?: string;
 
   @IsString()
   ordering?: string;
 
   @IsString()
   search?: string;
+  
+  @IsString()
+  page?: string;
 }
