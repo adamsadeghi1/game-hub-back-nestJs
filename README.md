@@ -34,6 +34,16 @@ $ npm install
 
 ## Running the app
 
+1- go to following address:
+```
+https://rawg.io/login?forward=developer
+```
+2- create a user and get your API Key it would take less than a minute.
+
+3- In your project folder open ```.env.example``` file and change the value of ```RAWG_API_KEY``` with the actual value you get from Rawg website.
+
+4- **Important!!** change the name of ```.env.example``` file to ```.env``` , and done!!!.
+
 ```bash
 # development
 $ npm run start
@@ -60,15 +70,19 @@ $ npm run test:cov
 
 ## Run app in Docker
 
-Create a .env file based on the keys designated on .env.example and locate in your root application then:
+start the back-end app with ```npm run start:docker```.
 
-```
-$ chmod +x start-app.sh
-
-$ ./start-app.sh
-```
 Thats it!!!
 
 Above code is going to create a docker image and a correspondant container and run the app on port ```3001```
 
 use ```localhost:3001/api``` to see swagger documentation.
+
+## Note
+
+If you encounter a permission error while runnig using ```npm run start:docker```, run the following command in the root of application:
+
+```
+$ chmod +x start-app.sh
+```
+
