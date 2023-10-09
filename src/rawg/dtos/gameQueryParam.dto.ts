@@ -12,7 +12,7 @@ export class GameQueryParamDto {
 
   @IsString()
   search?: string;
-  
+
   @IsString()
   page?: string;
 }

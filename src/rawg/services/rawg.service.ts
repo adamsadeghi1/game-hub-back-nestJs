@@ -7,10 +7,10 @@ import { GameApiResponseProcessed } from '../dtos/gameApiResponseProcessed.dto';
 import { Observable, map } from 'rxjs';
 import { GenreApiResponse } from '../dtos/genreApiResponse.dto';
 import { PlatformResponse } from '../dtos/platformResponse.dto';
-import { GameProcessed } from '../dtos/gameProcessed.dto';
 import { Genre } from '../dtos/genre.dto';
 import { Platform } from '../dtos/platform.dto';
 import { GameFinalResult } from '../dtos/gameFinalResult.dto';
+import { Game } from '../dtos/game.dto';
 
 @Injectable()
 export class RawgService {
@@ -27,21 +27,40 @@ export class RawgService {
     gameQueryParam: GameQueryParamDto,
   ): Observable<GameFinalResult> {
     console.log(`Reading Data from ${url} end-point`);
-    const fullUrl =this.getFullUrl(url);
+    const fullUrl = this.getFullUrl(url);
     const queryParams = {
       params: {
         genres: gameQueryParam?.genres,
         parent_platforms: gameQueryParam?.parent_platforms,
         ordering: gameQueryParam?.ordering,
         search: gameQueryParam?.search,
-        page: gameQueryParam?.page
+        page: gameQueryParam?.page,
       },
     };
 
     return this.httpService.get<GameApiResponse>(fullUrl, queryParams).pipe(
       map((response) => {
         const procesdResult = this.processGameResult(response.data);
-        return {next:procesdResult.next , results:procesdResult.results};
+        return { next: procesdResult.next, results: procesdResult.results };
+      }),
+    );
+  }
+
+  getGameAsync(url, id: number | string) {
+    console.log(`Reading Data from ${url} end-point`);
+    const fullUrl = this.getFullUrl(url, id);
+    console.log(fullUrl);
+    return this.httpService.get<Game>(fullUrl).pipe(
+      map((response) => {
+        return {
+          id: response.data.id,
+          slug: response.data.slug,
+          name: response.data.name,
+          description: response.data.description,
+          background_image: response.data.background_image,
+          metacritic: response.data.metacritic,
+          rating_top: response.data.rating_top,
+        };
       }),
     );
   }
@@ -76,17 +95,21 @@ export class RawgService {
     );
   }
 
-  private getFullUrl(url: string) {
+  private getFullUrl(url: string, param?: string | number) {
+    if (param !== undefined)
+      return `${this.BASE_URL}/${url}/${param}?key=${this.API_KEY}`;
     return `${this.BASE_URL}/${url}?key=${this.API_KEY}`;
   }
+
   private processGameResult(response: GameApiResponse) {
     const gameProcessedList = response.results.map((game) => {
-      const platforms = game.parent_platforms ? game.parent_platforms.map(
-        (platforms) => platforms.platform,
-      ) : [];
-      
+      const platforms = game.parent_platforms
+        ? game.parent_platforms.map((platforms) => platforms.platform)
+        : [];
+
       return {
         id: game.id,
+        slug: game.slug,
         name: game.name,
         background_image: game.background_image,
         parent_platforms: platforms,
@@ -94,9 +117,11 @@ export class RawgService {
         rating_top: game.rating_top,
       };
     });
-    const pageIndexInNext = response.next ?  response.next.indexOf('page=') : null;
-    const next =  pageIndexInNext ?  response.next.slice(pageIndexInNext) : null;
+    const pageIndexInNext = response.next
+      ? response.next.indexOf('page=')
+      : null;
+    const next = pageIndexInNext ? response.next.slice(pageIndexInNext) : null;
 
-    return new GameApiResponseProcessed(gameProcessedList,next);
+    return new GameApiResponseProcessed(gameProcessedList, next);
   }
 }
