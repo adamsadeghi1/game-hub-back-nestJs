@@ -1,4 +1,6 @@
+import { Genre } from './genre.dto';
 import { Platforms } from './platforms.dto';
+import { Publisher } from './publisher.dto';
 
 export class Game {
   id: number;
@@ -9,4 +11,6 @@ export class Game {
   parent_platforms: Platforms[];
   metacritic: number;
   rating_top: number;
+  genres: Genre[];
+  publishers: Publisher[];
 }

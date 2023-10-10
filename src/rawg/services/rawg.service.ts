@@ -57,9 +57,12 @@ export class RawgService {
           slug: response.data.slug,
           name: response.data.name,
           description_raw: response.data.description_raw,
+          parent_platforms: this.getPlatforms(response.data),
           background_image: response.data.background_image,
           metacritic: response.data.metacritic,
           rating_top: response.data.rating_top,
+          genres: response.data.genres,
+          publishers: response.data.publishers
         };
       }),
     );
@@ -101,11 +104,14 @@ export class RawgService {
     return `${this.BASE_URL}/${url}?key=${this.API_KEY}`;
   }
 
+  private getPlatforms(game:Game){
+    return game.parent_platforms
+    ? game.parent_platforms.map((platforms) => platforms.platform)
+    : [];
+  }
   private processGameResult(response: GameApiResponse) {
     const gameProcessedList = response.results.map((game) => {
-      const platforms = game.parent_platforms
-        ? game.parent_platforms.map((platforms) => platforms.platform)
-        : [];
+      const platforms = this.getPlatforms(game);
 
       return {
         id: game.id,
