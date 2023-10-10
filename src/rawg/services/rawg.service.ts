@@ -56,7 +56,7 @@ export class RawgService {
           id: response.data.id,
           slug: response.data.slug,
           name: response.data.name,
-          description: response.data.description,
+          description_raw: response.data.description_raw,
           background_image: response.data.background_image,
           metacritic: response.data.metacritic,
           rating_top: response.data.rating_top,
