@@ -11,6 +11,8 @@ import { Genre } from '../dtos/genre.dto';
 import { Platform } from '../dtos/platform.dto';
 import { GameFinalResult } from '../dtos/gameFinalResult.dto';
 import { Game } from '../dtos/game.dto';
+import { TrailerApiResponse } from '../dtos/trailerApiResponse.dto';
+import { Trailer } from '../dtos/trailer.dto';
 
 @Injectable()
 export class RawgService {
@@ -66,6 +68,14 @@ export class RawgService {
         };
       }),
     );
+  }
+
+  getGameTrailers(url:string,id: string | number){
+    console.log(`Reading Data from ${url} end-point`);
+    const fullUrl = this.getFullUrl(url+'/'+id+"/movies");
+    return this.httpService.get<TrailerApiResponse>(fullUrl).pipe(
+      map(res=> res.data.results.length >0 ? res.data.results[0]: {})
+    )
   }
 
   getGenresAsync(url: string): Observable<Genre[]> {

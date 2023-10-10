@@ -18,4 +18,9 @@ export class RawgGameController {
   async getGame(@Param() param: GameIdParam) {
     return this.rawgService.getGameAsync('games', param.id);
   }
+
+  @Get(':id/movie')
+  async getGameTrailer(@Param() param: GameIdParam) {
+    return this.rawgService.getGameTrailers('games', param.id);
+  }
 }
