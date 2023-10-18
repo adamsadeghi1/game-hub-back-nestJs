@@ -23,4 +23,11 @@ export class RawgGameController {
   async getGameTrailer(@Param() param: GameIdParam) {
     return this.rawgService.getGameTrailers('games', param.id);
   }
+
+  @Get(':id/screenshots')
+  async getGameScreenshots(@Param() param: GameIdParam) {
+    return this.rawgService.getGameScreenShots('games', param.id);
+  }
+
+
 }

@@ -13,6 +13,7 @@ import { GameFinalResult } from '../dtos/gameFinalResult.dto';
 import { Game } from '../dtos/game.dto';
 import { TrailerApiResponse } from '../dtos/trailerApiResponse.dto';
 import { Trailer } from '../dtos/trailer.dto';
+import { ScreenShotsApiResponse } from '../dtos/screenShotsApiResponse.dto';
 
 @Injectable()
 export class RawgService {
@@ -78,6 +79,13 @@ export class RawgService {
     )
   }
 
+  getGameScreenShots(url:string,id: string | number){
+    console.log(`Reading Data from ${url} end-point`);
+    const fullUrl = this.getFullUrl(url+'/'+id+"/screenshots");
+    return this.httpService.get<ScreenShotsApiResponse>(fullUrl).pipe(
+      map(res=> res.data.results.length >0 ? res.data.results : [])
+    )
+  }
   getGenresAsync(url: string): Observable<Genre[]> {
     console.log(`Reading Data from ${url} end-point`);
     const fullUrl = this.getFullUrl(url);
